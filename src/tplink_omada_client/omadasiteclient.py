@@ -11,6 +11,7 @@ from .clients import (
     OmadaWiredClientDetails,
     OmadaWirelessClient,
     OmadaWirelessClientDetails,
+    OmadaDhcpReservation,
 )
 from .definitions import (
     BandwidthControl,
@@ -197,12 +198,17 @@ class OmadaSiteClient:
 
     async def get_known_clients(self) -> AsyncIterable[OmadaNetworkClient]:
         """Get the clients connected to the site network."""
-        async for client in self._api.iterate_pages(self._api.format_url("insight/clients", self._site_id)):
+        async for client in self._api.iterate_pages(self._api.format_url("setting/service/dhcp", self._site_id)):
             is_wireless = client.get("wireless")
             if is_wireless:
                 yield OmadaWirelessClient(client)
             elif is_wireless is False:
                 yield OmadaWiredClient(client)
+
+    async def get_dhcp_reservations(self) -> AsyncIterable[OmadaDhcpReservation]:
+        """Get the DHCP reservations for this site network."""
+        async for client in self._api.iterate_pages(self._api.format_url("insight/clients", self._site_id)):
+            yield OmadaDhcpReservation(client)
 
     async def get_devices(self) -> list[OmadaListDevice]:
         """Get the list of devices on the site."""

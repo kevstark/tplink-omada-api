@@ -9,6 +9,25 @@ from .definitions import (
 )
 
 
+class OmadaDhcpReservation(OmadaApiData):
+    """Base representation of Omada DHCP Reservation"""
+
+    @property
+    def mac(self) -> str:
+        """The MAC address of the client."""
+        return self._data["mac"]
+
+    @property
+    def name(self) -> str:
+        """The name of the client."""
+        return self._data["clientName"]
+
+    @property
+    def status(self) -> bool:
+        """The enabled status of the reservation."""
+        return self._data["status"]
+
+
 class OmadaNetworkClient(OmadaApiData):
     """Base representation of Omada client"""
 

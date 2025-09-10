@@ -18,12 +18,17 @@ class OmadaDhcpReservation(OmadaApiData):
         return self._data["mac"]
 
     @property
+    def ip(self) -> str | None:
+        """The reserved IP address."""
+        return self._data.get("ip")
+
+    @property
     def name(self) -> str:
         """The name of the client."""
         return self._data["clientName"]
 
     @property
-    def status(self) -> bool:
+    def enabled(self) -> bool:
         """The enabled status of the reservation."""
         return self._data["status"]
 
